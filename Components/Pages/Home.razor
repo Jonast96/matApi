@@ -1,0 +1,61 @@
+﻿@page "/"
+
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IHttpClientFactory ClientFactory
+
+<h1>GET call testing</h1>
+
+@if (error || res is null)
+{
+    <p>
+        An error occurred while fetching the data. Error message: @errorMessage
+    </p>
+}
+else
+{
+    <p>@res.Name</p>
+}
+
+@code {
+    private ApiResponse? res;
+    private bool error;
+    private bool shouldRender;
+
+    private string errorMessage = "";
+
+    private readonly string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+
+    protected override bool ShouldRender() => shouldRender;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get,
+        "https://kassal.app/api/v1/products?search=lettmelk&sort=price_desc");
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
+        }
+        else
+        {
+            error = true;
+            errorMessage = response.ReasonPhrase;
+        }
+
+        shouldRender = true;
+    }
+
+    public class ApiResponse
+    {
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
+    }
+}
