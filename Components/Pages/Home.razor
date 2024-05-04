@@ -1,5 +1,4 @@
 ﻿@page "/"
-
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
@@ -8,18 +7,20 @@
 
 @if (error || res is null)
 {
-    <p>
-        An error occurred while fetching the data. Error message: @errorMessage
-    </p>
+    <p>An error occurred while fetching the data. Error message: @errorMessage</p>
 }
 else
 {
-    <p>@res.Name</p>
+    <p>@res.Data.Name</p> <!-- Adjusted to access name -->
+    <p>this should render</p>
+
 }
 
 @code {
     private ApiResponse? res;
     private bool error;
+
+
     private bool shouldRender;
 
     private string errorMessage = "";
@@ -30,32 +31,63 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get,
-        "https://kassal.app/api/v1/products?search=lettmelk&sort=price_desc");
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://kassal.app/api/v1/products/id/9090");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
         var client = ClientFactory.CreateClient();
 
         var response = await client.SendAsync(request);
+        LogResponse(response);
 
         if (response.IsSuccessStatusCode)
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
             res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
+
+
         }
         else
         {
             error = true;
             errorMessage = response.ReasonPhrase;
+
         }
 
         shouldRender = true;
     }
 
+    private void LogResponse(HttpResponseMessage response)
+    {
+        Console.WriteLine($"Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
+        Console.WriteLine("Response Headers:");
+        foreach (var header in response.Headers)
+        {
+            Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
+        }
+        var content = response.Content.ReadAsStringAsync().Result;
+        Console.WriteLine("Response Content:");
+        Console.WriteLine(content);
+    }
+
     public class ApiResponse
     {
+        [JsonPropertyName("data")]
+        public ProductData Data { get; set; } = new ProductData();
+    }
+
+    public class ProductData
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
+
+        [JsonPropertyName("brand")]
+        public string Brand { get; set; }
+
+        [JsonPropertyName("vendor")]
+        public string Vendor { get; set; }
     }
 }

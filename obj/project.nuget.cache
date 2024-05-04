@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H9FtXG3DjwBu7a9hhiOrLW2TlVpuCmF906S45ka5JIfo2cnZ5arjzOkZYGtaG8H/eCUc6nFzyNjhkNiNvfLbfQ==",
+  "dgSpecHash": "FUqLgtZzO6Zaieavv6pLvawVYZoPRqArs+tCRSxgBzUk5ltKYbqK/gTZK9Y+7Kw7PVq7VYCeHhISgXfhUnpQ1A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\foodApp.csproj",
+  "projectFilePath": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\foodApp.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

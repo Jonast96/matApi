@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "38eNDUaXyj647yQofmMFYeWs9CI5OW9fWVLvq5xuV9Y=",
+  "Hash": "TlAHvWJcCUGbSjhtU4q2xfRatbEGGu8tPij0RpLozR0=",
   "Source": "foodApp",
   "BasePath": "_content/foodApp",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "foodApp\\wwwroot",
       "Source": "foodApp",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css",
       "SourceId": "foodApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "foodApp.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css"
+      "OriginalItemSpec": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
       "SourceId": "foodApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "foodApp.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\app.css",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\favicon.png",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
