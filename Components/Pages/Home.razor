@@ -2,13 +2,15 @@
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+
 
 <h1>GET call testing</h1>
 
 @if (error || res is null)
 {
     <p>An error occurred while fetching the data. Error message: @errorMessage</p>
-    <EditForm FormName="search" Model="@this" OnValidSubmit="@HandleSubmit">
+    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
         <label for="search">Enter ID of item</label>
         <InputText id="search" @bind-Value="search" />
         <button type="submit">Search</button>
@@ -17,9 +19,13 @@
     <p>@res?.Data?.Name</p>
     <p>@res?.Data?.Brand</p>
     <p>@res?.Data?.Vendor</p>
+    <p>
+        @search
+    </p>
 }
 else
 {
+    @search
     <p>Showing result for @res.Data.Id</p>
     <p>@res.Data.Name</p>
     <p>@res.Data.Brand</p>
@@ -31,12 +37,9 @@ else
     private bool error = false;
     private string errorMessage = "";
     private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
-    private string search = ""; // Initially empty
+    private string search = "";
 
-    @* protected override async Task OnInitializedAsync()
-{
-await FetchData(search); // Initialize with empty or default search
-} *@
+
 
     private async Task HandleSubmit()
     {
@@ -44,15 +47,17 @@ await FetchData(search); // Initialize with empty or default search
         {
             error = true;
             errorMessage = "Search parameter cannot be empty";
-            Console.WriteLine();
-            await FetchData("9090");
+            await FetchData(search);
+            Console.WriteLine("Search parameter: " + search);
 
             return;
         }
         else
         {
-            await FetchData("9090");
+            await FetchData(search);
+            Console.WriteLine("Search parameter: " + search);
         }
+
     }
 
     private async Task FetchData(string searchParam)
@@ -122,8 +127,8 @@ await FetchData(search); // Initialize with empty or default search
                     {
                         WriteIndented = true
                     });
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(formattedContent);
+                @* Console.WriteLine("Response Content:"); *@
+                @* Console.WriteLine(formattedContent); *@
             }
             catch (JsonException)
             {
