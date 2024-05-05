@@ -3,29 +3,27 @@
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
 @rendermode InteractiveServer
-
+@using foodApp.Models
+@inject LogService LogService
 
 <h1>GET call testing</h1>
 
 @if (error || res is null)
 {
-    <p>An error occurred while fetching the data. Error message: @errorMessage</p>
+    <p>@errorMessage</p>
     <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
         <label for="search">Enter ID of item</label>
         <InputText id="search" @bind-Value="search" />
         <button type="submit">Search</button>
     </EditForm>
-    <p>Showing result for @res?.Data?.Id</p>
-    <p>@res?.Data?.Name</p>
-    <p>@res?.Data?.Brand</p>
-    <p>@res?.Data?.Vendor</p>
-    <p>
-        @search
-    </p>
 }
 else
 {
-    @search
+    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
+        <label for="search">Enter ID of item</label>
+        <InputText id="search" @bind-Value="search" />
+        <button type="submit">Search</button>
+    </EditForm>
     <p>Showing result for @res.Data.Id</p>
     <p>@res.Data.Name</p>
     <p>@res.Data.Brand</p>
@@ -47,20 +45,16 @@ else
         {
             error = true;
             errorMessage = "Search parameter cannot be empty";
-            await FetchData(search);
-            Console.WriteLine("Search parameter: " + search);
-
             return;
         }
         else
         {
             await FetchData(search);
-            Console.WriteLine("Search parameter: " + search);
         }
 
     }
 
-    private async Task FetchData(string searchParam)
+    public async Task FetchData(string searchParam)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"https://kassal.app/api/v1/products/id/{searchParam}");
         request.Headers.Add("Accept", "application/json");
@@ -68,7 +62,7 @@ else
 
         var client = ClientFactory.CreateClient();
         var response = await client.SendAsync(request);
-        LogResponse(response);
+        @* LogService.LogResponse(response); *@
 
         if (response.IsSuccessStatusCode)
         {
@@ -91,51 +85,8 @@ else
         public ProductData Data { get; set; } = new ProductData();
     }
 
-    public class ProductData
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
-        [JsonPropertyName("name")]
-        public string Name { get; set; } = "";
-
-        [JsonPropertyName("brand")]
-        public string Brand { get; set; } = "";
-
-        [JsonPropertyName("vendor")]
-        public string Vendor { get; set; } = "";
-    }
 
 
-    private void LogResponse(HttpResponseMessage response)
-    {
-        Console.WriteLine($"Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
-        Console.WriteLine("Response Headers:");
-        foreach (var header in response.Headers)
-        {
-            Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
-        }
 
-        // Asynchronously read the content to avoid blocking the main thread
-        response.Content.ReadAsStringAsync().ContinueWith(task =>
-        {
-            var content = task.Result;
-            try
-            {
-                // Parse and format the JSON content for better readability
-                var formattedContent = JsonSerializer.Serialize(JsonSerializer.Deserialize<object>(content), new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    });
-                @* Console.WriteLine("Response Content:"); *@
-                @* Console.WriteLine(formattedContent); *@
-            }
-            catch (JsonException)
-            {
-                // If content is not in valid JSON format, just print it directly
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(content);
-            }
-        });
-    }
+
 }
