@@ -8,35 +8,60 @@
 @if (error || res is null)
 {
     <p>An error occurred while fetching the data. Error message: @errorMessage</p>
+    <EditForm FormName="search" Model="@this" OnValidSubmit="@HandleSubmit">
+        <label for="search">Enter ID of item</label>
+        <InputText id="search" @bind-Value="search" />
+        <button type="submit">Search</button>
+    </EditForm>
+    <p>Showing result for @res?.Data?.Id</p>
+    <p>@res?.Data?.Name</p>
+    <p>@res?.Data?.Brand</p>
+    <p>@res?.Data?.Vendor</p>
 }
 else
 {
-    <p>@res.Data.Name</p> <!-- Adjusted to access name -->
-    <p>this should render</p>
-
+    <p>Showing result for @res.Data.Id</p>
+    <p>@res.Data.Name</p>
+    <p>@res.Data.Brand</p>
+    <p>@res.Data.Vendor</p>
 }
 
 @code {
     private ApiResponse? res;
-    private bool error;
-
-
-    private bool shouldRender;
-
+    private bool error = false;
     private string errorMessage = "";
+    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    private string search = ""; // Initially empty
 
-    private readonly string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    @* protected override async Task OnInitializedAsync()
+{
+await FetchData(search); // Initialize with empty or default search
+} *@
 
-    protected override bool ShouldRender() => shouldRender;
-
-    protected override async Task OnInitializedAsync()
+    private async Task HandleSubmit()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://kassal.app/api/v1/products/id/9090");
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            error = true;
+            errorMessage = "Search parameter cannot be empty";
+            Console.WriteLine();
+            await FetchData("9090");
+
+            return;
+        }
+        else
+        {
+            await FetchData("9090");
+        }
+    }
+
+    private async Task FetchData(string searchParam)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"https://kassal.app/api/v1/products/id/{searchParam}");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
         var client = ClientFactory.CreateClient();
-
         var response = await client.SendAsync(request);
         LogResponse(response);
 
@@ -44,31 +69,16 @@ else
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
             res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
-
-
         }
         else
         {
             error = true;
-            errorMessage = response.ReasonPhrase;
-
+            errorMessage = response?.ReasonPhrase ?? "unknown error";
         }
-
-        shouldRender = true;
     }
 
-    private void LogResponse(HttpResponseMessage response)
-    {
-        Console.WriteLine($"Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
-        Console.WriteLine("Response Headers:");
-        foreach (var header in response.Headers)
-        {
-            Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
-        }
-        var content = response.Content.ReadAsStringAsync().Result;
-        Console.WriteLine("Response Content:");
-        Console.WriteLine(content);
-    }
+
+
 
     public class ApiResponse
     {
@@ -82,12 +92,45 @@ else
         public int Id { get; set; }
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [JsonPropertyName("brand")]
-        public string Brand { get; set; }
+        public string Brand { get; set; } = "";
 
         [JsonPropertyName("vendor")]
-        public string Vendor { get; set; }
+        public string Vendor { get; set; } = "";
+    }
+
+
+    private void LogResponse(HttpResponseMessage response)
+    {
+        Console.WriteLine($"Status Code: {(int)response.StatusCode} {response.ReasonPhrase}");
+        Console.WriteLine("Response Headers:");
+        foreach (var header in response.Headers)
+        {
+            Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
+        }
+
+        // Asynchronously read the content to avoid blocking the main thread
+        response.Content.ReadAsStringAsync().ContinueWith(task =>
+        {
+            var content = task.Result;
+            try
+            {
+                // Parse and format the JSON content for better readability
+                var formattedContent = JsonSerializer.Serialize(JsonSerializer.Deserialize<object>(content), new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    });
+                Console.WriteLine("Response Content:");
+                Console.WriteLine(formattedContent);
+            }
+            catch (JsonException)
+            {
+                // If content is not in valid JSON format, just print it directly
+                Console.WriteLine("Response Content:");
+                Console.WriteLine(content);
+            }
+        });
     }
 }
