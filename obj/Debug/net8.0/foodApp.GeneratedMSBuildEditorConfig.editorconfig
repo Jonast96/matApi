@@ -30,8 +30,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Jon/Desktop/ToDoApi/foodApp/Components/Pages/SearchProducts.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTZWFyY2hQcm9kdWN0cy5yYXpvcg==
+[C:/Users/Jon/Desktop/ToDoApi/foodApp/Components/Pages/ProductPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9kdWN0UGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Jon/Desktop/ToDoApi/foodApp/Components/Pages/Weather.razor]

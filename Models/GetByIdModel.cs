@@ -14,6 +14,55 @@ public class ProductData
 
     [JsonPropertyName("vendor")]
     public string Vendor { get; set; } = "";
+
+    [JsonPropertyName("ean")]
+    public string Ean { get; set; } = "";
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = "";
+
+    [JsonPropertyName("image")]
+    public string? Image { get; set; }
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = "";
+
+    [JsonPropertyName("ingredients")]
+    public string Ingredients { get; set; } = "";
+
+
+    [JsonPropertyName("current_price")]
+    public double CurrentPrice { get; set; }
+
+    [JsonPropertyName("store")]
+    public StoreInfo Store { get; set; } = new StoreInfo();
+
+    [JsonPropertyName("price_history")]
+    public List<PriceHistory>? PriceHistory { get; set; }
+
 }
 
 
+public class StoreInfo
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
+
+    [JsonPropertyName("code")]
+    public string Code { get; set; } = "";
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = "";
+
+    [JsonPropertyName("logo")]
+    public string Logo { get; set; } = "";
+}
+
+public class PriceHistory
+{
+    [JsonPropertyName("date")]
+    public string? Date { get; set; }
+
+    [JsonPropertyName("price")]
+    public double Price { get; set; }
+}

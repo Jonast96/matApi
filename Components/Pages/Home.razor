@@ -6,57 +6,89 @@
 @using foodApp.Models
 @inject LogService LogService
 
-<h1>GET call testing</h1>
+<PageTitle>SearchProducts</PageTitle>
 
-@if (error || res is null)
-{
-    <p>@errorMessage</p>
-    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
-        <label for="search">Enter ID of item</label>
-        <InputText id="search" @bind-Value="search" />
-        <button type="submit">Search</button>
-    </EditForm>
-}
-else
-{
-    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
-        <label for="search">Enter ID of item</label>
-        <InputText id="search" @bind-Value="search" />
-        <button type="submit">Search</button>
-    </EditForm>
-    <p>Showing result for @res.Data.Id</p>
-    <p>@res.Data.Name</p>
-    <p>@res.Data.Brand</p>
-    <p>@res.Data.Vendor</p>
-}
+<div class="container">
+    <h1>Search Products</h1>
+
+    <div>
+        <div>
+            <EditForm FormName="sad" Model="@this" OnValidSubmit="@HandleSubmit">
+                <label for="search">Enter ID of item:</label>
+                <InputText id="search" @bind-Value="search" />
+                <button type="submit">Search</button>
+            </EditForm>
+        </div>
+        @if (!error && res != null && res.Data.Count > 0)
+        {
+            <div class="row g-3 mt-5">
+                @foreach (var item in res.Data)
+                {
+                    <a href="/product/@item.Id" class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none">
+
+                        <div class="border rounded h-100 p-3">
+                            <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@item.Image"
+                                alt="Card image cap" />
+
+                            <div class="d-flex align-content-center align-items-center gap-2 px-3">
+
+                                <img style="width: 35px; height: 35px;" class="rounded-circle" src=@item.Store.Logo alt="">
+                                <p class="card-text m-0 p-0">@item.Store.Name</p>
+                            </div>
+                            <div class="card-body mt-3">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Brand</p>
+                                <p class="card-text">@item.Ean</p>
+                                <p class="card-text">@item.CurrentPrice kr</p>
+                                <p class="card-text">@item.Vendor</p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+        else if (error)
+        {
+            <p>Error: @errorMessage</p>
+        }
+    </div>
+
+</div>
+
+
 
 @code {
     private ApiResponse? res;
+    private bool isLoading = false;
     private bool error = false;
     private string errorMessage = "";
     private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
-    private string search = "";
-
-
+    string search = "";
 
     private async Task HandleSubmit()
     {
+        isLoading = true;
+        error = false; // Reset error state at each submit
+        errorMessage = "";
+
+
         if (string.IsNullOrWhiteSpace(search))
         {
             error = true;
             errorMessage = "Search parameter cannot be empty";
+            isLoading = false; // Stop loading state
             return;
         }
-        else
-        {
-            await FetchData(search);
-        }
 
+        await FetchData(search);
+
+        isLoading = false; // Stop loading state after fetch operation
     }
 
     public async Task FetchData(string searchParam)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, $"https://kassal.app/api/v1/products/id/{searchParam}");
+        var request = new HttpRequestMessage(HttpMethod.Get,
+        $"https://kassal.app/api/v1/products/?search={searchParam}&size=12");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
@@ -64,25 +96,76 @@ else
         var response = await client.SendAsync(request);
         @* LogService.LogResponse(response); *@
 
+
         if (response.IsSuccessStatusCode)
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
+            var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream, options);
+
+            Console.WriteLine($"Data Count: {res.Data.Count}"); // Check how many items are loaded
+            if (res.Data.Count > 0)
+            {
+                Console.WriteLine($"First item name: {res.Data[0].Name}"); // Check the first item's name
+            }
         }
         else
         {
             error = true;
-            errorMessage = response?.ReasonPhrase ?? "unknown error";
+            errorMessage = response?.ReasonPhrase ?? "Unknown error occurred.";
         }
+
     }
-
-
-
 
     public class ApiResponse
     {
-        [JsonPropertyName("data")]
-        public ProductData Data { get; set; } = new ProductData();
+        public List<SearchResults> Data { get; set; } = new List<SearchResults>();
+    }
+
+
+    public class SearchResults
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = "";
+
+        [JsonPropertyName("brand")]
+        public string Brand { get; set; } = "";
+
+        [JsonPropertyName("ean")]
+        public string Ean { get; set; } = "";
+
+        [JsonPropertyName("image")]
+        public string Image { get; set; } = "";
+
+        [JsonPropertyName("current_price")]
+        public double CurrentPrice { get; set; } = 0.0;
+
+        [JsonPropertyName("vendor")]
+        public string Vendor { get; set; } = "";
+
+        [JsonPropertyName("store")]
+        public StoreInfo Store { get; set; } = new StoreInfo();
+    }
+
+    public class StoreInfo
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = "";
+
+        [JsonPropertyName("code")]
+        public string Code { get; set; } = "";
+
+        [JsonPropertyName("url")]
+        public string Url { get; set; } = "";
+
+        [JsonPropertyName("logo")]
+        public string Logo { get; set; } = "";
     }
 
 

@@ -1,0 +1,82 @@
+@page "/product/{id}"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+@using foodApp.Models
+@inject LogService LogService
+
+<div class="border rounded h-100 p-3 col-md-6 m-auto mt-5">
+    <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@res?.Data.Image"
+        alt="Card image cap" />
+
+    <div class="d-flex align-content-center align-items-center gap-2 px-3">
+
+        <img style="width: 35px; height: 35px;" class="rounded-circle" src="@res?.Data.Store?.Logo" alt="">
+        <p class="card-text m-0 p-0">@res?.Data?.Store?.Name</p>
+    </div>
+    <div class="card-body mt-3">
+        <h5 class="card-title">@res?.Data.Name</h5>
+        <p class="card-text">@res?.Data.Brand</p>
+        <p class="card-text">@res?.Data.Ean</p>
+        <p class="card-text">@res?.Data.CurrentPrice kr</p>
+        <p class="card-text">@res?.Data.Vendor</p>
+    </div>
+</div>
+
+
+
+
+@code {
+    private ApiResponse? res;
+    private bool error = false;
+    private string errorMessage = "";
+    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+
+
+    [Parameter]
+    public string? Id { get; set; }
+
+
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        await FetchData(Id);
+        Console.WriteLine($"id: {Id}");
+
+    }
+
+
+
+    public async Task FetchData(string searchParam)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"https://kassal.app/api/v1/products/id/{searchParam}");
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
+
+        var client = ClientFactory.CreateClient();
+        var response = await client.SendAsync(request);
+        @* LogService.LogResponse(response); *@
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
+        }
+        else
+        {
+            error = true;
+            errorMessage = response?.ReasonPhrase ?? "unknown error";
+        }
+    }
+
+
+
+
+    public class ApiResponse
+    {
+        [JsonPropertyName("data")]
+        public ProductData Data { get; set; } = new ProductData();
+    }
+}
