@@ -58,3 +58,6 @@ C:\Users\jonas\Desktop\csharpMat\matApi\obj\Debug\net8.0\foodApp.pdb
 C:\Users\jonas\Desktop\csharpMat\matApi\obj\Debug\net8.0\foodApp.genruntimeconfig.cache
 C:\Users\jonas\Desktop\csharpMat\matApi\obj\Debug\net8.0\ref\foodApp.dll
 C:\Users\Jon\Desktop\ToDoApi\foodApp\obj\Debug\net8.0\foodApp.sourcelink.json
+C:\Users\Jon\Desktop\ToDoApi\foodApp\bin\Debug\net8.0\BlazorBootstrap.dll
+C:\Users\Jon\Desktop\ToDoApi\foodApp\obj\Debug\net8.0\foodApp.csproj.AssemblyReference.cache
+C:\Users\Jon\Desktop\ToDoApi\foodApp\obj\Debug\net8.0\foodApp.csproj.Up2Date
