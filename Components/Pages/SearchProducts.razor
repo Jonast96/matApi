@@ -1,0 +1,138 @@
+﻿@page "/SearchProducts"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+@using foodApp.Models
+@inject LogService LogService
+
+<PageTitle>SearchProducts</PageTitle>
+
+<h1>Search Products</h1>
+
+<div>
+    <EditForm FormName="sad" Model="@this" OnValidSubmit="@HandleSubmit">
+        <label for="search">Enter ID of item:</label>
+        <InputText id="search" @bind-Value="search" />
+        <button type="submit">Search</button>
+    </EditForm>
+    @if (!error && res != null && res.Data.Count > 0)
+    {
+        <div class="row">
+            @foreach (var item in res.Data)
+            {
+                <div class="card col-md-6 col-lg-4">
+
+                    <img class="card-img-top img-fluid" src="@item.Image" alt="Card image cap" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Brand</p>
+                        <p class="card-text">@item.Ean</p>
+                        <p class="card-text">@item.CurrentPrice kr</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else if (error)
+    {
+        <p>Error: @errorMessage</p>
+    }
+</div>
+
+
+
+
+@code {
+    private ApiResponse? res;
+    private bool isLoading = false;
+    private bool error = false;
+    private string errorMessage = "";
+    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    string search = "";
+
+    private async Task HandleSubmit()
+    {
+        isLoading = true;
+        error = false; // Reset error state at each submit
+        errorMessage = "";
+
+
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            error = true;
+            errorMessage = "Search parameter cannot be empty";
+            isLoading = false; // Stop loading state
+            return;
+        }
+
+        await FetchData(search);
+
+        isLoading = false; // Stop loading state after fetch operation
+    }
+
+    public async Task FetchData(string searchParam)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get,
+        $"https://kassal.app/api/v1/products/?search={searchParam}&size=3");
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
+
+        var client = ClientFactory.CreateClient();
+        var response = await client.SendAsync(request);
+        LogService.LogResponse(response);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream, options);
+
+            Console.WriteLine($"Data Count: {res.Data.Count}"); // Check how many items are loaded
+            if (res.Data.Count > 0)
+            {
+                Console.WriteLine($"First item name: {res.Data[0].Name}"); // Check the first item's name
+            }
+        }
+        else
+        {
+            error = true;
+            errorMessage = response?.ReasonPhrase ?? "Unknown error occurred.";
+        }
+
+    }
+
+    public class ApiResponse
+    {
+        public List<SearchResults> Data { get; set; } = new List<SearchResults>();
+    }
+
+
+    public class SearchResults
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("brand")]
+        public string Brand { get; set; }
+
+        [JsonPropertyName("ean")]
+        public string Ean { get; set; }
+
+        [JsonPropertyName("image")]
+        public string Image { get; set; }
+
+        [JsonPropertyName("current_price")]
+        public double CurrentPrice { get; set; }
+
+    }
+
+}

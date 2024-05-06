@@ -1,43 +1,68 @@
 ﻿@page "/"
-
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+@using foodApp.Models
+@inject LogService LogService
 
 <h1>GET call testing</h1>
 
 @if (error || res is null)
 {
-    <p>
-        An error occurred while fetching the data. Error message: @errorMessage
-    </p>
+    <p>@errorMessage</p>
+    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
+        <label for="search">Enter ID of item</label>
+        <InputText id="search" @bind-Value="search" />
+        <button type="submit">Search</button>
+    </EditForm>
 }
 else
 {
-    <p>@res.Name</p>
+    <EditForm FormName="asd" Model="@this" OnValidSubmit="@HandleSubmit">
+        <label for="search">Enter ID of item</label>
+        <InputText id="search" @bind-Value="search" />
+        <button type="submit">Search</button>
+    </EditForm>
+    <p>Showing result for @res.Data.Id</p>
+    <p>@res.Data.Name</p>
+    <p>@res.Data.Brand</p>
+    <p>@res.Data.Vendor</p>
 }
 
 @code {
     private ApiResponse? res;
-    private bool error;
-    private bool shouldRender;
-
+    private bool error = false;
     private string errorMessage = "";
+    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    private string search = "";
 
-    private readonly string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
 
-    protected override bool ShouldRender() => shouldRender;
 
-    protected override async Task OnInitializedAsync()
+    private async Task HandleSubmit()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get,
-        "https://kassal.app/api/v1/products?search=lettmelk&sort=price_desc");
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            error = true;
+            errorMessage = "Search parameter cannot be empty";
+            return;
+        }
+        else
+        {
+            await FetchData(search);
+        }
+
+    }
+
+    public async Task FetchData(string searchParam)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"https://kassal.app/api/v1/products/id/{searchParam}");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
         var client = ClientFactory.CreateClient();
-
         var response = await client.SendAsync(request);
+        @* LogService.LogResponse(response); *@
 
         if (response.IsSuccessStatusCode)
         {
@@ -47,15 +72,21 @@ else
         else
         {
             error = true;
-            errorMessage = response.ReasonPhrase;
+            errorMessage = response?.ReasonPhrase ?? "unknown error";
         }
-
-        shouldRender = true;
     }
+
+
+
 
     public class ApiResponse
     {
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        [JsonPropertyName("data")]
+        public ProductData Data { get; set; } = new ProductData();
     }
+
+
+
+
+
 }
