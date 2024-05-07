@@ -8,26 +8,24 @@
 
 <PageTitle>SearchProducts</PageTitle>
 
-<div class="container">
-    <h1>Search Products</h1>
-
-    <div>
-        <div>
-            <EditForm FormName="sad" Model="@this" OnValidSubmit="@HandleSubmit">
-                <label for="search">Enter ID of item:</label>
-                <InputText id="search" @bind-Value="search" />
-                <button type="submit">Search</button>
+<div class="container mt-5">
+    <div class=" ">
+        <h1>Søk etter produkter</h1>
+        <div class="col-md-6 ">
+            <EditForm class="input-group" FormName="formname" Model="@this" OnValidSubmit="@HandleSubmit">
+                <InputText class="form-control" placeholder="Produkt" id="search" @bind-Value="search" />
+                <button class="btn btn-outline-secondary" type="submit">Søk</button>
             </EditForm>
         </div>
         @if (!error && res != null && res.Data.Count > 0)
         {
-            <div class="row g-3 mt-5">
+            <div class="row g-3 mt-3">
                 <div>
                     <Dropdown>
                         <DropdownToggleButton Color="ButtonColor.Primary">Sort by</DropdownToggleButton>
                         <DropdownMenu>
-                            <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
                             <DropdownItem @onclick="SetPriceAsc">Pris: Laveste Først</DropdownItem>
+                            <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -54,6 +52,12 @@
                         </div>
                     </a>
                 }
+                <div class="d-flex gap-2 align-items-center mb-5">
+                    <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
+                    <p class="m-0 p-0">Side: @pageNumber</p>
+                    <button @onclick="NextPage" class=" btn btn-primary">Neste side</button>
+
+                </div>
             </div>
         }
         else if (error)
@@ -73,49 +77,77 @@
     private string errorMessage = "";
     private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
     string search = "";
+    private int pageNumber = 1;
+    private string baseUrl = "https://kassal.app/api/v1/products/";
+    private string sortParam = "";
 
     private async Task HandleSubmit()
     {
         isLoading = true;
-        error = false; // Reset error state at each submit
+        error = false;
         errorMessage = "";
-
-
-        if (string.IsNullOrWhiteSpace(search))
-        {
-            error = true;
-            errorMessage = "Search parameter cannot be empty";
-            isLoading = false; // Stop loading state
-            return;
-        }
-
-        await FetchData(search, sort);
-
-        isLoading = false; // Stop loading state after fetch operation
+        await FetchData();
+        isLoading = false;
     }
 
-    private string sort = "&size=10&price_min=0&price_max=1000000";
+
+
 
     private async Task SetPriceDesc()
     {
-        sort = sort + "&sort=price_desc";
-        await FetchData(search, sort);
-        StateHasChanged();
+        sortParam = "&sort=price_desc";
+        await FetchData();
     }
 
     private async Task SetPriceAsc()
     {
-        sort = sort + "&sort=price_asc";
-        await FetchData(search, sort);
-        StateHasChanged();
+        sortParam = "&sort=price_asc";
+        await FetchData();
+    }
+
+    private async Task removeSorting()
+    {
+        sortParam = "";
+        await FetchData();
+    }
+
+    private async Task NextPage()
+    {
+        pageNumber++;
+        await FetchData();
+    }
+    private async Task PrevPage()
+    {
+        if (pageNumber > 1)
+        {
+            pageNumber--;
+            await FetchData();
+        }
+        else
+        {
+            pageNumber = 1;
+
+        }
+
     }
 
 
 
-    public async Task FetchData(string searchParam, string sort)
+
+
+    public async Task FetchData()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get,
-        $"https://kassal.app/api/v1/products/?search={searchParam}{sort}");
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            error = true;
+            errorMessage = "Søkefeltet kan ikke være tomt";
+            isLoading = false;
+            return;
+        }
+
+        var queryParams = $"page={pageNumber}&search={search}&size=12&price_min=0&price_max=1000000{sortParam}";
+        var requestUrl = $"{baseUrl}?{queryParams}";
+        var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
@@ -123,20 +155,18 @@
         var response = await client.SendAsync(request);
         LogService.LogResponse(response);
 
-
         if (response.IsSuccessStatusCode)
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            var options = new JsonSerializerOptions
+            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                };
-            res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream, options);
+                });
         }
         else
         {
             error = true;
-            errorMessage = response?.ReasonPhrase ?? "Unknown error occurred.";
+            errorMessage = $"Error: {response.StatusCode}";
         }
 
     }
