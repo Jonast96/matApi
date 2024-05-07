@@ -15,19 +15,73 @@
         <img style="width: 35px; height: 35px;" class="rounded-circle" src="@res?.Data.Store?.Logo" alt="">
         <p class="card-text m-0 p-0">@res?.Data?.Store?.Name</p>
     </div>
-    <div class="card-body mt-3">
+    <div class="card-body mt-3 d-flex flex-column ">
         <h5 class="card-title">@res?.Data.Name</h5>
-        <p class="card-text">@res?.Data.Brand</p>
-        <p class="card-text">@res?.Data.Ean</p>
-        <p class="card-text">@res?.Data.CurrentPrice kr</p>
-        <p class="card-text">@res?.Data.Vendor</p>
+        <p class="card-text">@res?.Data.Brand </p>
+        <p class="card-text"><span class="fw-bold">EAN: </span> @res?.Data.Ean</p>
+        <p class="card-text "><span class="fw-bold">PRIS: </span>@res?.Data.CurrentPrice kr</p>
+        <a target="blank" href=@res?.Data.Url>Vis produkt hos butikk</a>
+
+        <div>
+            <Button class="my-3" Type="ButtonType.Button" Color="ButtonColor.Primary" @onclick="ToggleAllergnes">Vis
+                Allergener</Button>
+            <Collapse @ref="collapse1">
+                <Card>
+                    <CardBody>
+                        <h5>Allergener</h5>
+                        <ul>
+                            @if (res?.Data?.Allergens != null)
+                            {
+                                foreach (var allergen in res.Data.Allergens)
+                                {
+                                    if (allergen.Contains == "YES")
+                                    {
+                                        hasAllergen = true;
+                                        <li>@allergen.DisplayName</li>
+                                    }
+                                }
+                                if (!hasAllergen)
+                                {
+                                    <li>Ingen allergener funnet</li>
+                                }
+                            }
+                            else
+                            {
+                                <li>Ingen data funnet</li>
+                            }
+                        </ul>
+                    </CardBody>
+                </Card>
+            </Collapse>
+        </div>
+        <div>
+            <Button class="my-3" Type="ButtonType.Button" Color="ButtonColor.Primary" @onclick="ToggleIngredients">Vis
+                Ingredienser</Button>
+            <Collapse @ref="collapse2">
+                <Card>
+                    <CardBody>
+                        <h5>Ingredienser</h5>
+                        <p>
+                            @res?.Data.Ingredients
+                        </p>
+                    </CardBody>
+                </Card>
+            </Collapse>
+        </div>
     </div>
 </div>
 
 
 
 
+
 @code {
+    Collapse collapse1 = default!;
+    Collapse collapse2 = default!;
+    private async Task ToggleAllergnes() => await collapse1.ToggleAsync();
+    private async Task ToggleIngredients() => await collapse2.ToggleAsync();
+
+    private bool hasAllergen = false;
     private ApiResponse? res;
     private bool error = false;
     private string errorMessage = "";

@@ -14,5 +14,6 @@
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)blazor.bootstrap\2.2.1\buildTransitive\Blazor.Bootstrap.props" Condition="Exists('$(NuGetPackageRoot)blazor.bootstrap\2.2.1\buildTransitive\Blazor.Bootstrap.props')" />
+    <Import Project="$(NuGetPackageRoot)blazor-apexcharts\3.3.0\buildTransitive\Blazor-ApexCharts.props" Condition="Exists('$(NuGetPackageRoot)blazor-apexcharts\3.3.0\buildTransitive\Blazor-ApexCharts.props')" />
   </ImportGroup>
 </Project>

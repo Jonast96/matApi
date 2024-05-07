@@ -22,11 +22,20 @@
         @if (!error && res != null && res.Data.Count > 0)
         {
             <div class="row g-3 mt-5">
+                <div>
+                    <Dropdown>
+                        <DropdownToggleButton Color="ButtonColor.Primary">Sort by</DropdownToggleButton>
+                        <DropdownMenu>
+                            <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
+                            <DropdownItem @onclick="SetPriceAsc">Pris: Laveste Først</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
                 @foreach (var item in res.Data)
                 {
-                    <a href="/product/@item.Id" class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none">
+                    <a href="/product/@item.Id" class="border-0  card col-md-6 col-lg-4 text-black text-decoration-none">
 
-                        <div class="border rounded h-100 p-3">
+                        <div class="border  rounded h-100 p-3">
                             <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@item.Image"
                                 alt="Card image cap" />
 
@@ -37,9 +46,9 @@
                             </div>
                             <div class="card-body mt-3">
                                 <h5 class="card-title">@item.Name</h5>
-                                <p class="card-text">@item.Brand</p>
+                                <p class="card-text">@item.Brand"</p>
                                 <p class="card-text">@item.Ean</p>
-                                <p class="card-text">@item.CurrentPrice kr</p>
+                                <p>Price: @item.CurrentPrice</p>
                                 <p class="card-text">@item.Vendor</p>
                             </div>
                         </div>
@@ -80,21 +89,39 @@
             return;
         }
 
-        await FetchData(search);
+        await FetchData(search, sort);
 
         isLoading = false; // Stop loading state after fetch operation
     }
 
-    public async Task FetchData(string searchParam)
+    private string sort = "&size=10&price_min=0&price_max=1000000";
+
+    private async Task SetPriceDesc()
+    {
+        sort = sort + "&sort=price_desc";
+        await FetchData(search, sort);
+        StateHasChanged();
+    }
+
+    private async Task SetPriceAsc()
+    {
+        sort = sort + "&sort=price_asc";
+        await FetchData(search, sort);
+        StateHasChanged();
+    }
+
+
+
+    public async Task FetchData(string searchParam, string sort)
     {
         var request = new HttpRequestMessage(HttpMethod.Get,
-        $"https://kassal.app/api/v1/products/?search={searchParam}&size=12");
+        $"https://kassal.app/api/v1/products/?search={searchParam}{sort}");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
         var client = ClientFactory.CreateClient();
         var response = await client.SendAsync(request);
-        @* LogService.LogResponse(response); *@
+        LogService.LogResponse(response);
 
 
         if (response.IsSuccessStatusCode)
@@ -105,12 +132,6 @@
                     PropertyNameCaseInsensitive = true
                 };
             res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream, options);
-
-            Console.WriteLine($"Data Count: {res.Data.Count}"); // Check how many items are loaded
-            if (res.Data.Count > 0)
-            {
-                Console.WriteLine($"First item name: {res.Data[0].Name}"); // Check the first item's name
-            }
         }
         else
         {

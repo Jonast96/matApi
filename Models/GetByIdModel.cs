@@ -40,6 +40,10 @@ public class ProductData
     [JsonPropertyName("price_history")]
     public List<PriceHistory>? PriceHistory { get; set; }
 
+    [JsonPropertyName("allergens")]
+    public List<Allergens>? Allergens { get; set; }
+
+
 }
 
 
@@ -56,6 +60,7 @@ public class StoreInfo
 
     [JsonPropertyName("logo")]
     public string Logo { get; set; } = "";
+
 }
 
 public class PriceHistory
@@ -65,4 +70,16 @@ public class PriceHistory
 
     [JsonPropertyName("price")]
     public double Price { get; set; }
+}
+
+public class Allergens
+{
+    [JsonPropertyName("code")]
+    public string Code { get; set; } = "";
+
+    [JsonPropertyName("display_name")]
+    public string DisplayName { get; set; } = "";
+
+    [JsonPropertyName("contains")]
+    public string Contains { get; set; } = "";
 }
