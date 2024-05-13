@@ -69,3 +69,14 @@ C:\Users\Jon\Desktop\ToDoApi\foodApp\bin\Debug\net8.0\Microsoft.AspNetCore.Compo
 C:\Users\Jon\Desktop\ToDoApi\foodApp\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
 C:\Users\Jon\Desktop\ToDoApi\foodApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\Jon\Desktop\ToDoApi\foodApp\bin\Debug\net8.0\Microsoft.JSInterop.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Blazor-ApexCharts.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\BlazorBootstrap.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\bin\Debug\net8.0\Microsoft.JSInterop.dll
+C:\Users\jonas\Desktop\csharpMat\matApi\obj\Debug\net8.0\foodApp.csproj.AssemblyReference.cache
+C:\Users\jonas\Desktop\csharpMat\matApi\obj\Debug\net8.0\foodApp.csproj.Up2Date
