@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("foodApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a7a1d43cf7af52bfecb164e56d5a5ac59914492")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0e3b1daa89fd3d533a70754b22a3610b4539f4a3")]
 [assembly: System.Reflection.AssemblyProductAttribute("foodApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("foodApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
