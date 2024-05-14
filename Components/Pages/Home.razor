@@ -31,26 +31,7 @@
                 </div>
                 @foreach (var item in res.Data)
                 {
-                    <a href="/product/@item.Id" class="border-0  card col-md-6 col-lg-4 text-black text-decoration-none">
-
-                        <div class="border  rounded h-100 p-3">
-                            <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@item.Image"
-                                alt="Card image cap" />
-
-                            <div class="d-flex align-content-center align-items-center gap-2 px-3">
-
-                                <img style="width: 35px; height: 35px;" class="rounded-circle" src=@item.Store.Logo alt="">
-                                <p class="card-text m-0 p-0">@item.Store.Name</p>
-                            </div>
-                            <div class="card-body mt-3">
-                                <h5 class="card-title">@item.Name</h5>
-                                <p class="card-text">@item.Brand"</p>
-                                <p class="card-text">@item.Ean</p>
-                                <p>Price: @item.CurrentPrice</p>
-                                <p class="card-text">@item.Vendor</p>
-                            </div>
-                        </div>
-                    </a>
+                    <ProductCard Product="@item" />
                 }
                 <div class="d-flex gap-2 align-items-center mb-5">
                     <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
