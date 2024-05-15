@@ -3,8 +3,11 @@
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
 @rendermode InteractiveServer
+@using Microsoft.Extensions.Options
 @using foodApp.Models
 @inject LogService LogService
+@inject IOptions<ApiSettings> ApiSettings
+
 
 <PageTitle>SearchProducts</PageTitle>
 
@@ -55,21 +58,22 @@
 
 
 @code {
-
-
     bool agree = false;
-
-
 
     private ApiResponse? res;
     private bool isLoading = false;
     private bool error = false;
     private string errorMessage = "";
-    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    private string bearerToken;
     string search = "";
     private int pageNumber = 1;
     private string baseUrl = "https://kassal.app/api/v1/products/";
     private string sortParam = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        bearerToken = ApiSettings.Value.ApiKey;
+    }
 
     private async Task HandleSubmit()
     {

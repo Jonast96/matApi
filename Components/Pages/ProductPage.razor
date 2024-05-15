@@ -5,6 +5,8 @@
 @rendermode InteractiveServer
 @using foodApp.Models
 @inject LogService LogService
+@using Microsoft.Extensions.Options
+@inject IOptions<ApiSettings> ApiSettings
 
 
 <div class="border rounded h-100 p-3 col-xl-6 m-auto mt-5 row">
@@ -80,6 +82,7 @@
     <LineChart @ref="lineChart" Width="1200" class="mb-3" />
 
 </div>
+using Microsoft.Extensions.Options;
 
 @code {
     Collapse collapse1 = default!;
@@ -93,7 +96,8 @@
     private ApiResponse? res;
     private bool error = false;
     private string errorMessage = "";
-    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+
+    private string bearerToken;
 
     private string baseUrl = "https://kassal.app/api/v1/";
 
@@ -111,6 +115,9 @@
 
     protected override void OnInitialized()
     {
+
+        bearerToken = ApiSettings.Value.ApiKey;
+
         var colors = ColorBuilder.CategoricalTwelveColors;
 
         var dataSets = new List<IChartDataset>();
