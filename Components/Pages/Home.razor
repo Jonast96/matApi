@@ -29,7 +29,7 @@
                         </DropdownMenu>
                     </Dropdown>
                     <div>
-                        <Switch @bind-Value="agree" @onchange="setUnique" Label="Vis kun en butikk per produkt" />
+                        <Switch @bind-Value="agree" @onclick="SetUnique" Label="Vis kun en butikk per produkt" />
                     </div>
                 </div>
                 @foreach (var item in res.Data)
@@ -57,7 +57,7 @@
 @code {
 
 
-    bool agree;
+    bool agree = false;
 
 
 
@@ -80,20 +80,21 @@
         isLoading = false;
     }
 
-    private async Task setUnique()
+    private async Task SetUnique()
     {
         if (agree)
         {
-            sortParam = sortParam + "&unique=1";
-            await FetchData();
+            Console.WriteLine(agree + " false");
+            sortParam = "&unique=0";
         }
         else
         {
-
-            sortParam = sortParam + "&unique=0";
-            await FetchData();
+            Console.WriteLine(agree + " true");
+            sortParam = "&unique=1";
         }
+        await FetchData();
     }
+
 
     private async Task SetPriceDesc()
     {
@@ -155,7 +156,7 @@
 
         var client = ClientFactory.CreateClient();
         var response = await client.SendAsync(request);
-        LogService.LogResponse(response);
+        @* LogService.LogResponse(response); *@
 
         if (response.IsSuccessStatusCode)
         {
