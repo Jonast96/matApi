@@ -3,14 +3,40 @@
 @using System.Text.Json.Serialization
 @inject IHttpClientFactory ClientFactory
 @rendermode InteractiveServer
+@using Microsoft.Extensions.Options
 @using foodApp.Models
 @inject LogService LogService
+@inject IOptions<ApiSettings> ApiSettings
+@inject ProductHistoryService ProductHistoryService
+
 
 <PageTitle>SearchProducts</PageTitle>
 
 <div class="container mt-5">
     <div class=" ">
         <h1>Søk etter produkter</h1>
+        <ul>
+            @if (lastViewedProducts == null)
+            {
+                <p>Loading...</p>
+            }
+            else if (!lastViewedProducts.Any())
+            {
+                <p>No products viewed yet.</p>
+            }
+            else
+            {
+                @foreach (var product in lastViewedProducts)
+                {
+                    <li>
+                        <a href="@($"/product/{product.Id}")">
+                            <img src="@product.ImageUrl" alt="@product.Name" width="50" />
+                            @product.Name
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
         <div class="col-md-6 ">
             <EditForm class="input-group" FormName="formname" Model="@this" OnValidSubmit="@HandleSubmit">
                 <InputText class="form-control" placeholder="Produkt" id="search" @bind-Value="search" />
@@ -19,8 +45,8 @@
         </div>
         @if (!error && res != null && res.Data.Count > 0)
         {
-            <div class="row g-3 mt-3">
-                <div>
+            <div class="row g-3 mt-3 ">
+                <div class="d-flex align-items-center gap-3 ">
                     <Dropdown>
                         <DropdownToggleButton Color="ButtonColor.Primary">Sort by</DropdownToggleButton>
                         <DropdownMenu>
@@ -28,29 +54,15 @@
                             <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+                    <div>
+                        <Switch @bind-Value="agree" @onclick="SetUnique" Label="Vis kun en butikk per produkt" />
+                    </div>
                 </div>
                 @foreach (var item in res.Data)
                 {
-                    <a href="/product/@item.Id" class="border-0  card col-md-6 col-lg-4 text-black text-decoration-none">
-
-                        <div class="border  rounded h-100 p-3">
-                            <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@item.Image"
-                                alt="Card image cap" />
-
-                            <div class="d-flex align-content-center align-items-center gap-2 px-3">
-
-                                <img style="width: 35px; height: 35px;" class="rounded-circle" src=@item.Store.Logo alt="">
-                                <p class="card-text m-0 p-0">@item.Store.Name</p>
-                            </div>
-                            <div class="card-body mt-3">
-                                <h5 class="card-title">@item.Name</h5>
-                                <p class="card-text">@item.Brand"</p>
-                                <p class="card-text">@item.Ean</p>
-                                <p>Price: @item.CurrentPrice</p>
-                                <p class="card-text">@item.Vendor</p>
-                            </div>
-                        </div>
-                    </a>
+                    <div @onclick="HandleClick">
+                        <ProductCard Product="@item" />
+                    </div>
                 }
                 <div class="d-flex gap-2 align-items-center mb-5">
                     <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
@@ -71,15 +83,32 @@
 
 
 @code {
+    bool agree = false;
+
     private ApiResponse? res;
     private bool isLoading = false;
     private bool error = false;
     private string errorMessage = "";
-    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+    private string bearerToken;
     string search = "";
     private int pageNumber = 1;
     private string baseUrl = "https://kassal.app/api/v1/products/";
     private string sortParam = "";
+    private List<PrevViewedModel> lastViewedProducts;
+    protected override async Task OnInitializedAsync()
+    {
+
+        bearerToken = ApiSettings.Value.ApiKey;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            lastViewedProducts = await ProductHistoryService.GetLastViewedProductsAsync();
+            StateHasChanged();
+        }
+    }
 
     private async Task HandleSubmit()
     {
@@ -90,7 +119,33 @@
         isLoading = false;
     }
 
+    private async Task HandleClick()
+    {
+        await ProductHistoryService.AddProductAsync(new PrevViewedModel
+            {
+                Id = 1,
+                Name = "Test",
+                ImageUrl = "https://via.placeholder.com/150",
+            });
+        lastViewedProducts = await ProductHistoryService.GetLastViewedProductsAsync();
+        StateHasChanged();
+    }
 
+
+    private async Task SetUnique()
+    {
+        if (agree)
+        {
+            Console.WriteLine(agree + " false");
+            sortParam = "&unique=0";
+        }
+        else
+        {
+            Console.WriteLine(agree + " true");
+            sortParam = "&unique=1";
+        }
+        await FetchData();
+    }
 
 
     private async Task SetPriceDesc()
@@ -153,7 +208,7 @@
 
         var client = ClientFactory.CreateClient();
         var response = await client.SendAsync(request);
-        LogService.LogResponse(response);
+        @* LogService.LogResponse(response); *@
 
         if (response.IsSuccessStatusCode)
         {

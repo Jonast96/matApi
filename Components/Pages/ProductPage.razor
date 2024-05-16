@@ -5,6 +5,9 @@
 @rendermode InteractiveServer
 @using foodApp.Models
 @inject LogService LogService
+@using Microsoft.Extensions.Options
+@inject IOptions<ApiSettings> ApiSettings
+
 
 <div class="border rounded h-100 p-3 col-xl-6 m-auto mt-5 row">
     <div class="col-lg-6">
@@ -13,7 +16,7 @@
     </div>
 
 
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-5">
         <div class="d-flex align-content-center align-items-center gap-2 px-3">
 
             <img style="width: 35px; height: 35px;" class="rounded-circle" src="@res?.Data.Store?.Logo" alt="">
@@ -25,11 +28,10 @@
             <p class="card-text "><span class="">PRIS: </span>@res?.Data.CurrentPrice kr</p>
             <a target="blank" href=@res?.Data.Url>Vis produkt hos butikk</a>
 
-            <LineChart @ref="lineChart" Width="500" class="mb-3" />
 
 
             <div>
-                <p class="mt-3 text-decoration-underline " @onclick="ToggleAllergnes">Vis
+                <p class="mt-3 text-decoration-underline pointer-event" role="button" @onclick="ToggleAllergnes">Vis
                     Allergener <i class="bi bi-arrow-down-short"></i></p>
                 <Collapse @ref="collapse1">
                     <Card>
@@ -61,7 +63,7 @@
                 </Collapse>
             </div>
             <div>
-                <p class="text-decoration-underline" @onclick="ToggleIngredients">Vis
+                <p role="button" class="text-decoration-underline" @onclick="ToggleIngredients">Vis
                     Ingredienser <i class="bi bi-arrow-down-short "></i></p>
                 <Collapse @ref="collapse2">
                     <Card>
@@ -75,8 +77,12 @@
                 </Collapse>
             </div>
         </div>
+
     </div>
+    <LineChart @ref="lineChart" Width="1200" class="mb-3" />
+
 </div>
+using Microsoft.Extensions.Options;
 
 @code {
     Collapse collapse1 = default!;
@@ -90,9 +96,12 @@
     private ApiResponse? res;
     private bool error = false;
     private string errorMessage = "";
-    private string bearerToken = "USZcHXCrTAi6p9tb9GRNJUoWehAXhNEj79JYGTJa";
+
+    private string bearerToken;
 
     private string baseUrl = "https://kassal.app/api/v1/";
+
+    private bool isDataReady = false;
 
 
 
@@ -106,6 +115,9 @@
 
     protected override void OnInitialized()
     {
+
+        bearerToken = ApiSettings.Value.ApiKey;
+
         var colors = ColorBuilder.CategoricalTwelveColors;
 
         var dataSets = new List<IChartDataset>();
@@ -150,9 +162,14 @@
         if (firstRender)
         {
             await lineChart.InitializeAsync(chartData, lineChartOptions);
+
         }
         await base.OnAfterRenderAsync(firstRender);
 
+        if (isDataReady)
+        {
+            await lineChart.UpdateAsync(chartData, lineChartOptions);
+        }
     }
 
 
@@ -181,14 +198,23 @@
             using var responseStream = await response.Content.ReadAsStreamAsync();
             res = await JsonSerializer.DeserializeAsync<ApiResponse>(responseStream);
 
-            foreach (var price in res?.Data.PriceHistory ?? new List<PriceHistory>())
+
+            if (res?.Data.PriceHistory != null)
             {
-                dates.Add(price.Date);
-                prices.Add(price.Price);
+                for (int i = 0; i < res.Data.PriceHistory.Count; i += 4)
+                {
+                    var price = res.Data.PriceHistory[i];
+                    DateTime date_object = DateTime.Parse(price.Date);
+                    string formatted_date = date_object.ToString("dd-MM-yyyy");
+                    dates.Add(formatted_date);
+                    prices.Add(price.Price);
+                }
 
-            };
-            await lineChart.UpdateAsync(chartData, lineChartOptions);
+                dates.Reverse();
+                prices.Reverse();
+            }
 
+            isDataReady = true;
 
 
         }
