@@ -42,8 +42,6 @@ public class ProductData
 
     [JsonPropertyName("allergens")]
     public List<Allergens>? Allergens { get; set; }
-
-
 }
 
 

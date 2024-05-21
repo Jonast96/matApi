@@ -15,28 +15,6 @@
 <div class="container mt-5">
     <div class=" ">
         <h1>Søk etter produkter</h1>
-        <ul>
-            @if (lastViewedProducts == null)
-            {
-                <p>Loading...</p>
-            }
-            else if (!lastViewedProducts.Any())
-            {
-                <p>No products viewed yet.</p>
-            }
-            else
-            {
-                @foreach (var product in lastViewedProducts)
-                {
-                    <li>
-                        <a href="@($"/product/{product.Id}")">
-                            <img src="@product.ImageUrl" alt="@product.Name" width="50" />
-                            @product.Name
-                        </a>
-                    </li>
-                }
-            }
-        </ul>
         <div class="col-md-6 ">
             <EditForm class="input-group" FormName="formname" Model="@this" OnValidSubmit="@HandleSubmit">
                 <InputText class="form-control" placeholder="Produkt" id="search" @bind-Value="search" />
@@ -76,6 +54,42 @@
         else if (error)
         {
             <p>Error: @errorMessage</p>
+        }
+        else
+        {
+            <div class="mt-5">
+                <h3>
+                    Dine siste produkter
+                </h3>
+
+
+                @if (lastViewedProducts == null)
+                {
+                    <p>Loading...</p>
+                }
+                else if (!lastViewedProducts.Any())
+                {
+                    <p>Ingen produkter sett enda.</p>
+                }
+                else
+                {
+                    @foreach (var product in lastViewedProducts)
+                    {
+                        <a href="/Product/@product.Id" class=""
+                            @onclick="()=> HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
+
+                            <div href="/Product/@product.Id"
+                                class=" d-flex align-items-center  gap-2 border mb-2 p-2 col-md-6 col-lg-4 text-black text-decoration-none ">
+                                <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
+                                <p>@product.Name</p>
+
+                            </div>
+                        </a>
+                    }
+                }
+
+
+            </div>
         }
     </div>
 

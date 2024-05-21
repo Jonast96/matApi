@@ -1,7 +1,5 @@
 using Microsoft.JSInterop;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 public class ProductHistoryService
 {
