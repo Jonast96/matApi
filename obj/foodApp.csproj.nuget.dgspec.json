@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\foodApp.csproj": {}
+    "C:\\Users\\Jon\\Documents\\GitHub\\test123\\foodApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\foodApp.csproj": {
+    "C:\\Users\\Jon\\Documents\\GitHub\\test123\\foodApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\foodApp.csproj",
+        "projectUniqueName": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\foodApp.csproj",
         "projectName": "foodApp",
-        "projectPath": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\foodApp.csproj",
+        "projectPath": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\foodApp.csproj",
         "packagesPath": "C:\\Users\\Jon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\",
+        "outputPath": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

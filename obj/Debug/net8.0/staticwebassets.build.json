@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kTV/WNxoYEVOcW+N+o0ocwB2XDbdwR3HlJoOv8AXLbA=",
+  "Hash": "3cFkHNuIlIolX75EnlU4a95hYrRvuXw2Q0HRPj8EcM0=",
   "Source": "foodApp",
   "BasePath": "_content/foodApp",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "foodApp\\wwwroot",
       "Source": "foodApp",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "Pattern": "**"
     }
@@ -226,10 +226,10 @@
       "OriginalItemSpec": "C:\\Users\\Jon\\.nuget\\packages\\blazor.bootstrap\\2.2.1\\staticwebassets\\pdfjs-4.0.379.worker.min.mjs"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css",
+      "Identity": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css",
       "SourceId": "foodApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "foodApp.styles.css",
       "AssetKind": "All",
@@ -242,13 +242,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css"
+      "OriginalItemSpec": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\bundle\\foodApp.styles.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
+      "Identity": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
       "SourceId": "foodApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "foodApp.bundle.scp.css",
       "AssetKind": "All",
@@ -261,13 +261,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\wwwroot\\app.css",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\wwwroot\\favicon.png",
       "SourceId": "foodApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Jon\\Desktop\\ToDoApi\\foodApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Jon\\Documents\\GitHub\\test123\\wwwroot\\",
       "BasePath": "_content/foodApp",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
