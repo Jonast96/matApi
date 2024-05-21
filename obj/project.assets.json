@@ -674,24 +674,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jonas\\.nuget\\packages\\": {}
+    "C:\\Users\\Jon\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\foodApp.csproj",
+      "projectUniqueName": "C:\\Users\\Jon\\Desktop\\matApi\\foodApp.csproj",
       "projectName": "foodApp",
-      "projectPath": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\foodApp.csproj",
-      "packagesPath": "C:\\Users\\jonas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\",
+      "projectPath": "C:\\Users\\Jon\\Desktop\\matApi\\foodApp.csproj",
+      "packagesPath": "C:\\Users\\Jon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jon\\Desktop\\matApi\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\jonas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Jon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {},
         "https://pro.cesoft.no/api/v4/projects/335/packages/nuget/index.json": {}
       },
@@ -744,7 +751,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

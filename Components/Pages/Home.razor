@@ -60,7 +60,8 @@
                 </div>
                 @foreach (var item in res.Data)
                 {
-                    <div @onclick="HandleClick">
+                    <div class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none"
+                        @onclick="()=> HandleClick(item)">
                         <ProductCard Product="@item" />
                     </div>
                 }
@@ -119,13 +120,13 @@
         isLoading = false;
     }
 
-    private async Task HandleClick()
+    private async Task HandleClick(ProductData item)
     {
         await ProductHistoryService.AddProductAsync(new PrevViewedModel
             {
-                Id = 1,
-                Name = "Test",
-                ImageUrl = "https://via.placeholder.com/150",
+                Id = item.Id,
+                Name = item.Name,
+                ImageUrl = item.Image,
             });
         lastViewedProducts = await ProductHistoryService.GetLastViewedProductsAsync();
         StateHasChanged();

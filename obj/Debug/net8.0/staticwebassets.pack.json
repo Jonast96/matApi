@@ -1,15 +1,15 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
+      "Id": "C:\\Users\\Jon\\Desktop\\matApi\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\foodApp.bundle.scp.css",
       "PackagePath": "staticwebassets\\foodApp.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\app.css",
+      "Id": "C:\\Users\\Jon\\Desktop\\matApi\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "C:\\Users\\jonas\\Desktop\\csharpMat\\matApi\\wwwroot\\favicon.png",
+      "Id": "C:\\Users\\Jon\\Desktop\\matApi\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
