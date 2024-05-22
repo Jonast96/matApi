@@ -41,7 +41,7 @@
                 @foreach (var item in res.Data)
                 {
                     <div class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none"
-                        @onclick="()=> HandleClick(item)">
+                        @onclick="()=> AddToHistory(item)">
                         <ProductCard Product="@item" />
                     </div>
                 }
@@ -55,7 +55,7 @@
         }
         else
         {
-            <LastViewedProducts Products="lastViewedProducts" OnProductClick="HandleClick" />
+            <LastViewedProducts Products="lastViewedProducts" OnProductClick="AddToHistory" />
         }
     </div>
 
@@ -65,7 +65,6 @@
 
 @code {
     bool agree = false;
-
     private ApiResponse? res;
     private bool isLoading = false;
     private bool error = false;
@@ -100,7 +99,7 @@
         isLoading = false;
     }
 
-    private async Task HandleClick(ProductData item)
+    private async Task AddToHistory(ProductData item)
     {
         await ProductHistoryService.AddProductAsync(new PrevViewedModel
             {
@@ -117,12 +116,10 @@
     {
         if (agree)
         {
-            Console.WriteLine(agree + " false");
             sortParam = "&unique=0";
         }
         else
         {
-            Console.WriteLine(agree + " true");
             sortParam = "&unique=1";
         }
         await FetchData();
@@ -162,11 +159,6 @@
         }
 
     }
-
-
-
-
-
     public async Task FetchData()
     {
         if (string.IsNullOrWhiteSpace(search))
