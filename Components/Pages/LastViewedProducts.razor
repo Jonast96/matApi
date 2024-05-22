@@ -1,0 +1,41 @@
+@using foodApp.Models
+@code {
+    [Parameter]
+    public List<PrevViewedModel> Products { get; set; }
+
+    [Parameter]
+    public EventCallback<ProductData> OnProductClick { get; set; }
+
+    private void HandleClick(ProductData product)
+    {
+        OnProductClick.InvokeAsync(product);
+    }
+}
+
+<div class="mt-5">
+    <h3>Dine siste produkter</h3>
+
+    @if (Products == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (!Products.Any())
+    {
+        <p>Ingen produkter sett enda.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Products)
+            {
+                <a href="/Product/@product.Id" class="col-md-6"
+                    @onclick="() => HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
+                    <div class="d-flex align-items-center gap-2 border mb-2 p-2 text-black text-decoration-none">
+                        <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
+                        <p>@product.Name</p>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>

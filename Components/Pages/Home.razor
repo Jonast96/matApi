@@ -5,6 +5,7 @@
 @rendermode InteractiveServer
 @using Microsoft.Extensions.Options
 @using foodApp.Models
+@using foodApp.Components
 @inject LogService LogService
 @inject IOptions<ApiSettings> ApiSettings
 @inject ProductHistoryService ProductHistoryService
@@ -57,42 +58,44 @@
         }
         else
         {
-            <div class="mt-5">
-                <h3>
-                    Dine siste produkter
-                </h3>
+            @* <div class="mt-5">
+        <h3>
+        Dine siste produkter
+        </h3>
 
 
-                @if (lastViewedProducts == null)
-                {
-                    <p>Loading...</p>
-                }
-                else if (!lastViewedProducts.Any())
-                {
-                    <p>Ingen produkter sett enda.</p>
-                }
-                else
-                {
-                    <div class="row">
+        @if (lastViewedProducts == null)
+        {
+        <p>Loading...</p>
+        }
+        else if (!lastViewedProducts.Any())
+        {
+        <p>Ingen produkter sett enda.</p>
+        }
+        else
+        {
+        <div class="row">
 
-                        @foreach (var product in lastViewedProducts)
-                        {
-                            <a href="/Product/@product.Id" class=" col-md-6"
-                                @onclick="()=> HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
+        @foreach (var product in lastViewedProducts)
+        {
+        <a href="/Product/@product.Id" class=" col-md-6"
+        @onclick="()=> HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
 
-                                <div href="/Product/@product.Id"
-                                    class=" d-flex align-items-center  gap-2 border mb-2 p-2 text-black text-decoration-none ">
-                                    <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
-                                    <p>@product.Name</p>
+        <div href="/Product/@product.Id"
+        class=" d-flex align-items-center gap-2 border mb-2 p-2 text-black text-decoration-none ">
+        <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
+        <p>@product.Name</p>
 
-                                </div>
-                            </a>
-                        }
-                    </div>
-                }
+        </div>
+        </a>
+        }
+        </div>
+        }
 
 
-            </div>
+        </div> *@
+
+            <LastViewedProducts Products="lastViewedProducts" OnProductClick="HandleClick" />
         }
     </div>
 
