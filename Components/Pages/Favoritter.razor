@@ -1,5 +1,17 @@
 @page "/favoritter"
+@inject IJSRuntime JSRuntime
+@using foodApp.Models
+@inject FavoriteProducts _favoriteProducts
 
-<PageTitle>Favoritter</PageTitle>
+<h3>Favorite Products</h3>
 
-<h1>favoritter</h1>
+@code {
+    private List<ProductData> favoriteProducts;
+    protected override async Task OnInitializedAsync()
+    {
+        favoriteProducts = await _favoriteProducts.GetFavoriteProductsAsync();
+        StateHasChanged();
+
+    }
+
+}

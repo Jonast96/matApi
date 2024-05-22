@@ -7,12 +7,15 @@
 @inject LogService LogService
 @using Microsoft.Extensions.Options
 @inject IOptions<ApiSettings> ApiSettings
+@inject IJSRuntime JSRuntime
 
 
 <div class="border rounded h-100 p-3 col-xl-6 m-auto mt-5 row">
     <div class="col-lg-6">
         <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@res?.Data.Image"
             alt="Card image cap" />
+        <button @onclick="AddToFavorites" class="w-100 mt-3 btn btn-primary rounded-1">Legg til i Favoritter</button>
+
     </div>
 
 
@@ -84,6 +87,40 @@
 </div>
 
 @code {
+    private FavoriteProducts _favoriteProducts;
+
+    private async Task AddToFavorites()
+    {
+        var product = new ProductData
+            {
+                Id = res.Data.Id,
+                Name = res.Data.Name,
+                Brand = res.Data.Brand,
+                Vendor = res.Data.Vendor,
+                Ean = res.Data.Ean,
+                Url = res.Data.Url,
+                Image = res.Data.Image,
+                Description = res.Data.Description,
+                Ingredients = res.Data.Ingredients,
+                CurrentPrice = res.Data.CurrentPrice,
+            };
+
+        await _favoriteProducts.AddProductAsync(product);
+        Console.WriteLine("Product added to favorites.");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     Collapse collapse1 = default!;
     Collapse collapse2 = default!;
     private async Task ToggleAllergnes() => await collapse1.ToggleAsync();
@@ -114,6 +151,8 @@
 
     protected override void OnInitialized()
     {
+        _favoriteProducts = new FavoriteProducts(JSRuntime);
+
 
         bearerToken = ApiSettings.Value.ApiKey;
 
