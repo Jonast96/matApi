@@ -31,7 +31,8 @@
                 <a href="/Product/@product.Id" class="col-md-6"
                     @onclick="() => HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
                     <div class="d-flex align-items-center gap-2 border mb-2 p-2 text-black text-decoration-none">
-                        <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
+                        <img style="height: 75px; width: 75px; object-fit: contain;" src="@product.ImageUrl" class="img-fluid"
+                            alt="" />
                         <p>@product.Name</p>
                     </div>
                 </a>

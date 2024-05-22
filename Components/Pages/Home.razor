@@ -6,6 +6,7 @@
 @using Microsoft.Extensions.Options
 @using foodApp.Models
 @using foodApp.Components
+@using foodApp.Components.HomeComponents
 @inject LogService LogService
 @inject IOptions<ApiSettings> ApiSettings
 @inject ProductHistoryService ProductHistoryService
@@ -29,8 +30,8 @@
                     <Dropdown>
                         <DropdownToggleButton Color="ButtonColor.Primary">Sort by</DropdownToggleButton>
                         <DropdownMenu>
-                            <DropdownItem @onclick="SetPriceAsc">Pris: Laveste Først</DropdownItem>
-                            <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
+                            <DropdownItem @onclick='() => SetSorting("&sort=price_asc")'>Pris: Laveste Først</DropdownItem>
+                            <DropdownItem @onclick='()=> SetSorting("&sort=price_desc")'>Pris: Høyeste Først</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <div>
@@ -128,23 +129,19 @@
     }
 
 
-    private async Task SetPriceDesc()
-    {
-        sortParam = "&sort=price_desc";
-        await FetchData();
-    }
-
-    private async Task SetPriceAsc()
-    {
-        sortParam = "&sort=price_asc";
-        await FetchData();
-    }
-
     private async Task removeSorting()
     {
         sortParam = "";
         await FetchData();
     }
+
+
+    private async Task SetSorting(string x)
+    {
+        sortParam = x;
+        await FetchData();
+    }
+
 
     private async Task NextPage()
     {
