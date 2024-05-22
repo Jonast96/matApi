@@ -1,0 +1,16 @@
+@code {
+    [Parameter]
+    public int pageNumber { get; set; }
+    [Parameter]
+    public EventCallback PrevPage { get; set; }
+    [Parameter]
+    public EventCallback NextPage { get; set; }
+
+}
+
+<div class="d-flex gap-2 align-items-center mb-5">
+    <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
+    <p class="m-0 p-0">Side: @pageNumber</p>
+    <button @onclick="NextPage" class=" btn btn-primary">Neste side</button>
+
+</div>

@@ -44,12 +44,8 @@
                         <ProductCard Product="@item" />
                     </div>
                 }
-                <div class="d-flex gap-2 align-items-center mb-5">
-                    <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
-                    <p class="m-0 p-0">Side: @pageNumber</p>
-                    <button @onclick="NextPage" class=" btn btn-primary">Neste side</button>
 
-                </div>
+                <CustomPagination pageNumber="pageNumber" PrevPage="PrevPage" NextPage="NextPage" />
             </div>
         }
         else if (error)
@@ -58,43 +54,6 @@
         }
         else
         {
-            @* <div class="mt-5">
-        <h3>
-        Dine siste produkter
-        </h3>
-
-
-        @if (lastViewedProducts == null)
-        {
-        <p>Loading...</p>
-        }
-        else if (!lastViewedProducts.Any())
-        {
-        <p>Ingen produkter sett enda.</p>
-        }
-        else
-        {
-        <div class="row">
-
-        @foreach (var product in lastViewedProducts)
-        {
-        <a href="/Product/@product.Id" class=" col-md-6"
-        @onclick="()=> HandleClick(new ProductData { Id = product.Id, Name = product.Name, Image = product.ImageUrl })">
-
-        <div href="/Product/@product.Id"
-        class=" d-flex align-items-center gap-2 border mb-2 p-2 text-black text-decoration-none ">
-        <img style="height: 75px;" src="@product.ImageUrl" class="img-fluid" alt="@product.Name" />
-        <p>@product.Name</p>
-
-        </div>
-        </a>
-        }
-        </div>
-        }
-
-
-        </div> *@
-
             <LastViewedProducts Products="lastViewedProducts" OnProductClick="HandleClick" />
         }
     </div>
