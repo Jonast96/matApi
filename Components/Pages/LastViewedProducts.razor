@@ -1,7 +1,7 @@
 @using foodApp.Models
 @code {
     [Parameter]
-    public List<PrevViewedModel> Products { get; set; }
+    public List<PrevViewedModel> Products { get; set; } = new List<PrevViewedModel>();
 
     [Parameter]
     public EventCallback<ProductData> OnProductClick { get; set; }

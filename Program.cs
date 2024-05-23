@@ -12,6 +12,7 @@ if (builder.Environment.IsDevelopment())
 // Bind the ApiSettings section to the ApiSettings class
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 builder.Services.AddScoped<ProductHistoryService>();
+builder.Services.AddScoped<FavoriteProducts>();
 // Add services to the container
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddHttpClient();

@@ -68,13 +68,13 @@
     private ApiResponse? res;
     private bool isLoading = false;
     private bool error = false;
-    private string errorMessage = "";
-    private string bearerToken;
+    private string? errorMessage;
+    private string? bearerToken;
     string search = "";
     private int pageNumber = 1;
     private string baseUrl = "https://kassal.app/api/v1/products/";
     private string sortParam = "";
-    private List<PrevViewedModel> lastViewedProducts;
+    private List<PrevViewedModel> lastViewedProducts = new List<PrevViewedModel>();
     protected override async Task OnInitializedAsync()
     {
 
@@ -105,7 +105,7 @@
             {
                 Id = item.Id,
                 Name = item.Name,
-                ImageUrl = item.Image,
+                ImageUrl = item.Image ?? string.Empty,
             });
         lastViewedProducts = await ProductHistoryService.GetLastViewedProductsAsync();
         StateHasChanged();
@@ -192,8 +192,8 @@
             error = true;
             errorMessage = $"Error: {response.StatusCode}";
         }
-
     }
+
 
     public class ApiResponse
     {

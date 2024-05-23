@@ -1,17 +1,32 @@
 @page "/favoritter"
+@inject FavoriteProducts favoriteProductsService
 @inject IJSRuntime JSRuntime
 @using foodApp.Models
-@inject FavoriteProducts _favoriteProducts
 
 <h3>Favorite Products</h3>
+@if (favoriteProducts == null || favoriteProducts.Count == 0)
+{
+    <p>Ingen produkter enda</p>
+}
+else
+{
+    <p>not 0</p>
+    <p>@favoriteProducts.Count</p>
+    @foreach (var product in favoriteProducts)
+    {
+        <p>@product.Name</p>
+    }
+}
 
 @code {
-    private List<ProductData> favoriteProducts;
-    protected override async Task OnInitializedAsync()
+    private List<PrevViewedModel> favoriteProducts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        favoriteProducts = await _favoriteProducts.GetFavoriteProductsAsync();
-        StateHasChanged();
-
+        if (firstRender)
+        {
+            favoriteProducts = await favoriteProductsService.GetFavoriteProductsAsync();
+            StateHasChanged();
+        }
     }
-
 }

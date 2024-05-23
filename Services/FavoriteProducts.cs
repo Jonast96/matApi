@@ -12,7 +12,7 @@ public class FavoriteProducts
         _jsRuntime = jsRuntime;
     }
 
-    public async Task AddProductAsync(ProductData product)
+    public async Task AddProductAsync(PrevViewedModel product)
     {
         var products = await GetFavoriteProductsAsync();
         products.RemoveAll(p => p.Id == product.Id);
@@ -27,11 +27,11 @@ public class FavoriteProducts
         await _jsRuntime.InvokeVoidAsync("localStorage.setItem", LocalStorageKey, json);
     }
 
-    public async Task<List<ProductData>> GetFavoriteProductsAsync()
+    public async Task<List<PrevViewedModel>?> GetFavoriteProductsAsync()
     {
         var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
 
-        return string.IsNullOrEmpty(json) ? new List<ProductData>() : JsonSerializer.Deserialize<List<ProductData>>(json);
+        return string.IsNullOrEmpty(json) ? new List<PrevViewedModel>() : JsonSerializer.Deserialize<List<PrevViewedModel>>(json);
     }
 
     public async Task RemoveProductAsync(int productId)

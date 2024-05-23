@@ -87,22 +87,15 @@
 </div>
 
 @code {
-    private FavoriteProducts _favoriteProducts;
+    private FavoriteProducts _favoriteProducts = default!;
+    private List<PrevViewedModel> Products { get; set; }
 
     private async Task AddToFavorites()
     {
-        var product = new ProductData
+        var product = new PrevViewedModel
             {
                 Id = res.Data.Id,
                 Name = res.Data.Name,
-                Brand = res.Data.Brand,
-                Vendor = res.Data.Vendor,
-                Ean = res.Data.Ean,
-                Url = res.Data.Url,
-                Image = res.Data.Image,
-                Description = res.Data.Description,
-                Ingredients = res.Data.Ingredients,
-                CurrentPrice = res.Data.CurrentPrice,
             };
 
         await _favoriteProducts.AddProductAsync(product);
@@ -133,9 +126,7 @@
     private bool error = false;
     private string errorMessage = "";
 
-    private string bearerToken;
-
-    private string baseUrl = "https://kassal.app/api/v1/";
+    private string bearerToken = "";
 
     private bool isDataReady = false;
 

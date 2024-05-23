@@ -26,7 +26,7 @@ public class ProductHistoryService
         await _jsRuntime.InvokeVoidAsync("localStorage.setItem", LocalStorageKey, json);
     }
 
-    public async Task<List<PrevViewedModel>> GetLastViewedProductsAsync()
+    public async Task<List<PrevViewedModel>?> GetLastViewedProductsAsync()
     {
         var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", LocalStorageKey);
         return string.IsNullOrEmpty(json) ? new List<PrevViewedModel>() : JsonSerializer.Deserialize<List<PrevViewedModel>>(json);
