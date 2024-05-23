@@ -96,6 +96,8 @@
             {
                 Id = res.Data.Id,
                 Name = res.Data.Name,
+                Price = res.Data.CurrentPrice,
+                ImageUrl = res.Data.Image
             };
 
         await _favoriteProducts.AddProductAsync(product);
