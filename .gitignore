@@ -1,2 +1,16 @@
-obj/
-bin/
+# Ignore build artifacts
+/bin/
+/obj/
+
+# Ignore other temporary files
+*.user
+*.suo
+*.cache
+*.log
+*.pdb
+*.vs
+.vscode/
+.idea/
+
+# Ignore npm packages
+node_modules/
