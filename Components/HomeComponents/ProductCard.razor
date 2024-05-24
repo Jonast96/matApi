@@ -1,7 +1,7 @@
 @using foodApp.Models
 
-<a href="/Product/@Product.Id" class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none">
-    <div class="border rounded h-100 p-3">
+<a href="/Product/@Product.Id" class="">
+    <div class="border rounded h-100 p-3 text-black">
         <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@Product.Image"
             alt="Card image cap" />
         <div class="d-flex align-content-center align-items-center gap-2 px-3">
@@ -20,5 +20,5 @@
 
 @code {
     [Parameter]
-    public ProductData Product { get; set; }
+    public ProductData Product { get; set; } = new ProductData();
 }

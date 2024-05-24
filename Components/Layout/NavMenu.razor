@@ -1,6 +1,8 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject IJSRuntime JSRuntime
+
+<div class="top-row ps-3 navbar navbar-dark mb-2">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">foodApp</a>
+        <a class="navbar-brand fs-3" href="">MatMynt</a>
     </div>
 </div>
 
@@ -9,9 +11,29 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink @onclick="ReloadPage" class="nav-link" href="" Match="NavLinkMatch.All">
+                <p class="m-0 px-2 fs-5">
+                    Hjem
+                </p>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink @onclick="ReloadPage" class="nav-link" href="/favoritter" Match="NavLinkMatch.All">
+                <p class="m-0 px-2 fs-5">
+                    Favoritter
+                </p>
             </NavLink>
         </div>
     </nav>
 </div>
+
+@code {
+
+    @code {
+        private void ReloadPage()
+        {
+            JSRuntime.InvokeVoidAsync("location.reload");
+        }
+    }
+
+}

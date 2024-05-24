@@ -7,12 +7,15 @@
 @inject LogService LogService
 @using Microsoft.Extensions.Options
 @inject IOptions<ApiSettings> ApiSettings
+@inject IJSRuntime JSRuntime
 
 
 <div class="border rounded h-100 p-3 col-xl-6 m-auto mt-5 row">
     <div class="col-lg-6">
         <img style="height: 250px; object-fit: contain;" class="card-img-top img-fluid" src="@res?.Data.Image"
             alt="Card image cap" />
+        <button @onclick="AddToFavorites" class="w-100 mt-3 btn btn-primary rounded-1">Legg til i Favoritter</button>
+
     </div>
 
 
@@ -82,9 +85,37 @@
     <LineChart @ref="lineChart" Width="1200" class="mb-3" />
 
 </div>
-using Microsoft.Extensions.Options;
 
 @code {
+    private FavoriteProducts _favoriteProducts = default!;
+    private List<PrevViewedModel> Products { get; set; }
+
+    private async Task AddToFavorites()
+    {
+        var product = new PrevViewedModel
+            {
+                Id = res.Data.Id,
+                Name = res.Data.Name,
+                Price = res.Data.CurrentPrice,
+                ImageUrl = res.Data.Image
+            };
+
+        await _favoriteProducts.AddProductAsync(product);
+        Console.WriteLine("Product added to favorites.");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     Collapse collapse1 = default!;
     Collapse collapse2 = default!;
     private async Task ToggleAllergnes() => await collapse1.ToggleAsync();
@@ -97,9 +128,7 @@ using Microsoft.Extensions.Options;
     private bool error = false;
     private string errorMessage = "";
 
-    private string bearerToken;
-
-    private string baseUrl = "https://kassal.app/api/v1/";
+    private string bearerToken = "";
 
     private bool isDataReady = false;
 
@@ -115,6 +144,8 @@ using Microsoft.Extensions.Options;
 
     protected override void OnInitialized()
     {
+        _favoriteProducts = new FavoriteProducts(JSRuntime);
+
 
         bearerToken = ApiSettings.Value.ApiKey;
 

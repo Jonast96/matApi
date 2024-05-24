@@ -1,0 +1,47 @@
+@page "/favoritter"
+@inject FavoriteProducts favoriteProductsService
+@inject IJSRuntime JSRuntime
+@using foodApp.Models
+
+<div class="container mt-4">
+    <h1 class="mb-4">Favorite Products</h1>
+    @if (favoriteProducts == null || favoriteProducts.Count == 0)
+    {
+        <p>Ingen produkter enda</p>
+    }
+    else
+    {
+        <div class="row g-2">
+
+            @foreach (var Product in favoriteProducts)
+            {
+                <div class=" rounded h-100 text-black col-md-4 ">
+                    <div class="border p-3">
+
+                    <a href="/Product/@Product.Id" class=" ">
+                        <img style="height: 200px; object-fit: contain;" class="card-img-top img-fluid" src="@Product.ImageUrl"
+                            alt="Card image cap" />
+                    </a>
+                    <div class="card-body mt-3">
+                        <h5 class="card-title">@Product.Name</h5>
+                        <p>Price: @Product.Price</p>
+                    </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<PrevViewedModel> favoriteProducts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            favoriteProducts = await favoriteProductsService.GetFavoriteProductsAsync();
+            StateHasChanged();
+        }
+    }
+}

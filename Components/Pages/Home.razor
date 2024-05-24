@@ -5,6 +5,8 @@
 @rendermode InteractiveServer
 @using Microsoft.Extensions.Options
 @using foodApp.Models
+@using foodApp.Components
+@using foodApp.Components.HomeComponents
 @inject LogService LogService
 @inject IOptions<ApiSettings> ApiSettings
 @inject ProductHistoryService ProductHistoryService
@@ -15,28 +17,6 @@
 <div class="container mt-5">
     <div class=" ">
         <h1>Søk etter produkter</h1>
-        <ul>
-            @if (lastViewedProducts == null)
-            {
-                <p>Loading...</p>
-            }
-            else if (!lastViewedProducts.Any())
-            {
-                <p>No products viewed yet.</p>
-            }
-            else
-            {
-                @foreach (var product in lastViewedProducts)
-                {
-                    <li>
-                        <a href="@($"/product/{product.Id}")">
-                            <img src="@product.ImageUrl" alt="@product.Name" width="50" />
-                            @product.Name
-                        </a>
-                    </li>
-                }
-            }
-        </ul>
         <div class="col-md-6 ">
             <EditForm class="input-group" FormName="formname" Model="@this" OnValidSubmit="@HandleSubmit">
                 <InputText class="form-control" placeholder="Produkt" id="search" @bind-Value="search" />
@@ -50,8 +30,8 @@
                     <Dropdown>
                         <DropdownToggleButton Color="ButtonColor.Primary">Sort by</DropdownToggleButton>
                         <DropdownMenu>
-                            <DropdownItem @onclick="SetPriceAsc">Pris: Laveste Først</DropdownItem>
-                            <DropdownItem @onclick="SetPriceDesc">Pris: Høyeste Først</DropdownItem>
+                            <DropdownItem @onclick='() => SetSorting("&sort=price_asc")'>Pris: Laveste Først</DropdownItem>
+                            <DropdownItem @onclick='()=> SetSorting("&sort=price_desc")'>Pris: Høyeste Først</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <div>
@@ -60,21 +40,22 @@
                 </div>
                 @foreach (var item in res.Data)
                 {
-                    <div @onclick="HandleClick">
+                    <div class="border-0 card col-md-6 col-lg-4 text-black text-decoration-none"
+                        @onclick="()=> AddToHistory(item)">
                         <ProductCard Product="@item" />
                     </div>
                 }
-                <div class="d-flex gap-2 align-items-center mb-5">
-                    <button @onclick="PrevPage" class=" btn btn-secondary">Forrige side</button>
-                    <p class="m-0 p-0">Side: @pageNumber</p>
-                    <button @onclick="NextPage" class=" btn btn-primary">Neste side</button>
 
-                </div>
+                <CustomPagination pageNumber="pageNumber" PrevPage="PrevPage" NextPage="NextPage" />
             </div>
         }
         else if (error)
         {
             <p>Error: @errorMessage</p>
+        }
+        else
+        {
+            <LastViewedProducts Products="lastViewedProducts" OnProductClick="AddToHistory" />
         }
     </div>
 
@@ -84,17 +65,16 @@
 
 @code {
     bool agree = false;
-
     private ApiResponse? res;
     private bool isLoading = false;
     private bool error = false;
-    private string errorMessage = "";
-    private string bearerToken;
+    private string? errorMessage;
+    private string? bearerToken;
     string search = "";
     private int pageNumber = 1;
     private string baseUrl = "https://kassal.app/api/v1/products/";
     private string sortParam = "";
-    private List<PrevViewedModel> lastViewedProducts;
+    private List<PrevViewedModel> lastViewedProducts = new List<PrevViewedModel>();
     protected override async Task OnInitializedAsync()
     {
 
@@ -119,13 +99,13 @@
         isLoading = false;
     }
 
-    private async Task HandleClick()
+    private async Task AddToHistory(ProductData item)
     {
         await ProductHistoryService.AddProductAsync(new PrevViewedModel
             {
-                Id = 1,
-                Name = "Test",
-                ImageUrl = "https://via.placeholder.com/150",
+                Id = item.Id,
+                Name = item.Name,
+                ImageUrl = item.Image ?? string.Empty,
             });
         lastViewedProducts = await ProductHistoryService.GetLastViewedProductsAsync();
         StateHasChanged();
@@ -136,35 +116,29 @@
     {
         if (agree)
         {
-            Console.WriteLine(agree + " false");
             sortParam = "&unique=0";
         }
         else
         {
-            Console.WriteLine(agree + " true");
             sortParam = "&unique=1";
         }
         await FetchData();
     }
 
 
-    private async Task SetPriceDesc()
-    {
-        sortParam = "&sort=price_desc";
-        await FetchData();
-    }
-
-    private async Task SetPriceAsc()
-    {
-        sortParam = "&sort=price_asc";
-        await FetchData();
-    }
-
     private async Task removeSorting()
     {
         sortParam = "";
         await FetchData();
     }
+
+
+    private async Task SetSorting(string x)
+    {
+        sortParam = x;
+        await FetchData();
+    }
+
 
     private async Task NextPage()
     {
@@ -185,11 +159,6 @@
         }
 
     }
-
-
-
-
-
     public async Task FetchData()
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -223,8 +192,8 @@
             error = true;
             errorMessage = $"Error: {response.StatusCode}";
         }
-
     }
+
 
     public class ApiResponse
     {
